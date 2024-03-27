@@ -16,6 +16,14 @@ const studentSchema = new mongoose.Schema({
 // Create a Mongoose model using the schema
 const Student = mongoose.model('Student', studentSchema);
 
+// Establish connection to MongoDB
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch(err => console.error('Could not connect to MongoDB', err));
+
 app.get('/', (req, res) => {
   res.sendFile(__dirname + "/form.html");
 });
@@ -23,20 +31,9 @@ app.get('/', (req, res) => {
 app.post('/', async (req, res) => {
   try {
     // Get the MongoDB URI from the form
-    const { myuri } = req.body;
+    const { myuri, name, studentID } = req.body;
 
-    // Define hardcoded values for name and studentID
-    const name = "Enea Paja";
-    const studentID = "300356865";
-
-    // Connect to the MongoDB database and log the connection
-    await mongoose.connect(myuri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
-    console.log('Connected to MongoDB');
-
-    // Create a new document with the hardcoded values
+    // Create a new document with the form values
     const newStudent = new Student({
       name: name,
       studentID: studentID
