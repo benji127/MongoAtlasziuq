@@ -7,40 +7,52 @@ app.use(express.urlencoded({ extended: true }));
 
 const port = process.env.PORT || 3000;
 
-// Connect to MongoDB
-mongoose.connect('mongodb://atlas-sql-66036023854b13760cf3a7f8-qgo6r.a.query.mongodb.net/w24students?ssl=true&authSource=admin'
-, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('Could not connect to MongoDB', err));
-
-// Define schema
+// Define a Mongoose schema for the document
 const studentSchema = new mongoose.Schema({
   name: String,
   studentID: String
 });
 
-// Create model
-const Student = mongoose.model('Student', studentSchema, 'w24students');
+// Create a Mongoose model using the schema
+const Student = mongoose.model('Student', studentSchema);
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + "/form.html");
 });
 
 app.post('/', async (req, res) => {
-  // Get data from the form
-  const { name, studentID } = req.body;
+  try {
+    // Get the MongoDB URI from the form
+    const { myuri } = req.body;
 
-  // Create a new student document
-  const student = new Student({
-    name,
-    studentID
-  });
+    // Define hardcoded values for name and studentID
+    const name = "Tiago Guerra Endsfeldz";
+    const studentID = "300351925";
 
-  // Save the document to the database
-  await student.save();
+    // Connect to the MongoDB database and log the connection
+    await mongoose.connect(myuri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log('Connected to MongoDB');
 
-  // Send a response to the user
-  res.send(`<h1>Document Added</h1>`);
+    // Create a new document with the hardcoded values
+    const newStudent = new Student({
+      name: name,
+      studentID: studentID
+    });
+
+    // Add the document to the database
+    await newStudent.save();
+    console.log('Document added to w24students collection');
+
+    // Send a response to the user
+    res.send(`<h1>Document Added</h1>`);
+
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 app.listen(port, () => {
