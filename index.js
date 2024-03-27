@@ -8,7 +8,8 @@ app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 3000;
 
 // Connect to MongoDB
-mongoose.connect('mongodb://atlas-sql-66036023854b13760cf3a7f8-qgo6r.a.query.mongodb.net/“w24students”?ssl=true&authSource=admin', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://atlas-sql-66036023854b13760cf3a7f8-qgo6r.a.query.mongodb.net/w24students?ssl=true&authSource=admin'
+, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Could not connect to MongoDB', err));
 
