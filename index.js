@@ -26,8 +26,8 @@ app.post('/', async (req, res) => {
     const { myuri } = req.body;
 
     // Define hardcoded values for name and studentID
-    const name = "Tiago Guerra Endsfeldz";
-    const studentID = "300351925";
+    const name = "Enea Paja";
+    const studentID = "300356865";
 
     // Connect to the MongoDB database and log the connection
     await mongoose.connect(myuri, {
