@@ -30,8 +30,8 @@ app.get('/', (req, res) => {
 
 app.post('/', async (req, res) => {
   try {
-    // Get the MongoDB URI from the form
-    const { myuri, name, studentID } = req.body;
+    // Get the student details from the request body
+    const { name, studentID } = req.body;
 
     // Create a new document with the form values
     const newStudent = new Student({
